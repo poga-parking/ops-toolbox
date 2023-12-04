@@ -17,7 +17,7 @@ x-deploy: &deploy_cons
 
 services:
   grafana:
-    image: # -- put image
+    image: grafana/grafana:10.2.2
     <<: *logging
     deploy: *deploy_cons
     ports:
@@ -43,7 +43,7 @@ services:
         published: ${PROMETHEUS_PORT}
         protocol: tcp
         mode: ingress
-    image: # put image
+    image: ubuntu/prometheus:2.46.0-22.04_stable
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--log.level=error'
