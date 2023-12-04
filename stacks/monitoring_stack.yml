@@ -9,8 +9,7 @@ x-logging: &logging
 x-deploy: &deploy_cons
   placement:
       constraints:
-          - node.role != manager
-          - node.labels.monitoring == true
+          - node.role == manager
   replicas: 1
   restart_policy:
         condition: on-failure
@@ -34,7 +33,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_USERS_ALLOW_SIGN_UP=false
     networks:
-      - poganet # change 
+      - poga-network
 
   prometheus:
     <<: *logging
@@ -45,7 +44,7 @@ services:
         mode: ingress
     image: ubuntu/prometheus:2.46.0-22.04_stable
     command:
-      - '--config.file=/etc/monitoring/config/prometheus.yml'
+      - '--config.file=/etc/prometheus/prometheus.yml'
       - '--log.level=error'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention.time=7d'
@@ -54,13 +53,16 @@ services:
       - type: volume
         source: prometheus-data
         target: /prometheus
+      - type: bind
+        source: ../monitoring/prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+        read_only: true
+      - type: bind
+        source: ../monitoring/alertmanager/alertmanager-rules.yml
+        target: /etc/prometheus/alertmanager-rules.yml
+        read_only: true
     networks:
-      - poganet
-    configs:
-      - source: prometheus_conf
-        target: /etc/monitoring/config/prometheus.yml
-      - source: alertmanager_rules
-        target: /etc//monitoring/config/alertmanager-rules.yml
+      - poga-network
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.0
@@ -95,7 +97,7 @@ services:
         target: /dev/disk
         read_only: true
     networks:
-      - poganet
+      - poga-network
 
   node-exporter:
     image: prom/node-exporter:v1.5.0
@@ -126,7 +128,7 @@ services:
         target: /host/sys
         read_only: true
     networks:
-      - poganet
+      - poga-network
 
 alertmanager:
     image: prom/alertmanager:v0.26.0
@@ -141,29 +143,13 @@ alertmanager:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/etc/alertmanager/data'
-    configs:
-      - source: alertmanager_conf
+    volumes:
+      - type: bind
+        source: ../monitoring/alertmanager/alertmanager-config.yml
         target: /etc/alertmanager/config.yml
+        read_only: true
     networks:
-      - poganet
-  
-  log-generator:
-    image: mingrammer/flog
-    <<: *logging
-    deploy:
-      replicas: 1
-      restart_policy:
-          condition: none
-    command:
-      - --loop
-      - --format=json
-      - --number=10 # number of log lines to generate per second
-      - --delay=100ms # delay between log lines
-      - --output=/dev/stdout # var/log/generated-logs.txt
-      - --overwrite
-      - --type=log
-    networks:
-      - poganet
+      - poga-network
 
 volumes:
   grafana-data:  ## WARNING! No NFS, node-specific volume
@@ -171,16 +157,5 @@ volumes:
   alertmanager-bot-data:  ## WARNING! No NFS, node-specific volume
 
 networks:
-  poganet:
+  poga-network:
     external: true
-
-configs:
-  prometheus_conf:
-    external:
-      name: prometheus_config
-  alertmanager_conf:
-    external:
-      name: alertmanager_config
-  alertmanager_rules:
-    external:
-      name: alertmanager_rules
