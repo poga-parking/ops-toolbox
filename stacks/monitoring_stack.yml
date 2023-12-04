@@ -45,7 +45,7 @@ services:
         mode: ingress
     image: ubuntu/prometheus:2.46.0-22.04_stable
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--config.file=/etc/monitoring/config/prometheus.yml'
       - '--log.level=error'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention.time=7d'
@@ -58,9 +58,9 @@ services:
       - poganet
     configs:
       - source: prometheus_conf
-        target: /etc/prometheus/prometheus.yml
+        target: /etc/monitoring/config/prometheus.yml
       - source: alertmanager_rules
-        target: /etc/prometheus/alertmanager-rules.yml
+        target: /etc//monitoring/config/alertmanager-rules.yml
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.0
