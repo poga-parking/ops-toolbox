@@ -26,10 +26,10 @@ services:
         mode: ingress
     volumes:
       - type: bind
-        source: ../configs/grafana/provisioning/dashboards/main.yml
+        source: ../configs/monitoring/grafana/provisioning/dashboards/main.yml
         target: /etc/grafana/provisioning/dashboards/main.yaml
       - type: bind
-        source: ../configs/grafana/dashboards
+        source: ../configs/monitoring/grafana/dashboards
         target: /var/lib/grafana/dashboards
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
@@ -57,7 +57,7 @@ services:
         source: prometheus-data
         target: /prometheus
       - type: bind
-        source: ../configs/monitoring/prometheus.yml
+        source: ../configs/monitoring/prometheus/prometheus.yml
         target: /etc/prometheus/prometheus.yml
         read_only: true
       - type: bind
