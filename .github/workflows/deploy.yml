@@ -19,7 +19,7 @@ jobs:
         username: ${{ secrets.DEPLOY_REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "."
-        target: "poga-deploy"
+        target: "${{ env.SOURCE_CODE_PATH }}"
         
     - name: Export token 
       uses: appleboy/ssh-action@master
@@ -29,7 +29,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
             export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
-            cd poga-deploy/configs/monitoring/alertmanager
+            cd ${{ env.SOURCE_CODE_PATH }}/configs/monitoring/alertmanager
             sed -i "s|bot_token: ''|bot_token: '${TELEGRAM_BOT_TOKEN}'|g" alertmanager-config.yml
     
 
