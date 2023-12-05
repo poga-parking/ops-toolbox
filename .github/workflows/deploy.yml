@@ -14,5 +14,6 @@ jobs:
       with:
         host: ${{ secrets.DEPLOY_REMOTE_HOST }}
         username: ${{ secrets.DEPLOY_REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "."
-        target: "poga/deploy"
+        target: "/poga-deploy"
