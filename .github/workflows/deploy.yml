@@ -31,6 +31,6 @@ jobs:
             export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
             cd ${{ env.SOURCE_CODE_PATH }}/configs/monitoring/alertmanager
             sed -i "s|bot_token: ''|bot_token: '${TELEGRAM_BOT_TOKEN}'|g" alertmanager-config.yml
-            echo -e "${{ vars.SETTINGS }}" >> ~/${{ env.SOURCE_CODE_PATH }}/stacks/.env
+            echo "${{ vars.SETTINGS }}" >> ~/${{ env.SOURCE_CODE_PATH }}/stacks/.env
     
 
