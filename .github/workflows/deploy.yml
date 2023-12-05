@@ -13,7 +13,7 @@ jobs:
         ARGS: "-rlgoDzvc -i"
         REMOTE_HOST: ${{ secrets.DEPLOY_REMOTE_HOST }}
         REMOTE_USER: ${{ secrets.DEPLOY_REMOTE_USER }}
-        SOURCE: "."
+        SOURCE: "./"
         TARGET: poga-deploy
         # SCRIPT_BEFORE: |
         #   mkdir -p poga-deploy && echo -e ${{ vars.SETTINGS }} > ./poga-deploy/stacks/.env
