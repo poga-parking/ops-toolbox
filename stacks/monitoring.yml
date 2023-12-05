@@ -25,6 +25,9 @@ services:
         protocol: tcp
         mode: ingress
     volumes:
+      - type: volume
+        source: grafana-data
+        target: /var/lib/grafana
       - type: bind
         source: ../configs/monitoring/grafana/provisioning/dashboards/main.yml
         target: /etc/grafana/provisioning/dashboards/main.yaml
@@ -158,6 +161,7 @@ services:
       - poga
 
 volumes:
+  grafana-data:  ## WARNING! No NFS, node-specific volume
   prometheus-data:  ## WARNING! No NFS, node-specific volume
 
 networks:
