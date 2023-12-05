@@ -25,15 +25,18 @@ services:
         protocol: tcp
         mode: ingress
     volumes:
-      - type: volume
-        source: grafana-data
-        target: /var/lib/grafana
+      - type: bind
+        source: ../configs/grafana/provisioning/dashboards/main.yml
+        target: /etc/grafana/provisioning/dashboards/main.yaml
+      - type: bind
+        source: ../configs/grafana/dashboards
+        target: /var/lib/grafana/dashboards
     environment:
       - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_USERS_ALLOW_SIGN_UP=false
     networks:
-      - poga-network
+      - poga
 
   prometheus:
     <<: *logging
@@ -54,15 +57,15 @@ services:
         source: prometheus-data
         target: /prometheus
       - type: bind
-        source: ../monitoring/prometheus.yml
+        source: ../configs/monitoring/prometheus.yml
         target: /etc/prometheus/prometheus.yml
         read_only: true
       - type: bind
-        source: ../monitoring/alertmanager/alertmanager-rules.yml
+        source: ../configs/monitoring/alertmanager/alertmanager-rules.yml
         target: /etc/prometheus/alertmanager-rules.yml
         read_only: true
     networks:
-      - poga-network
+      - poga
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.0
@@ -97,7 +100,7 @@ services:
         target: /dev/disk
         read_only: true
     networks:
-      - poga-network
+      - poga
 
   node-exporter:
     image: prom/node-exporter:v1.5.0
@@ -128,9 +131,9 @@ services:
         target: /host/sys
         read_only: true
     networks:
-      - poga-network
+      - poga
 
-alertmanager:
+  alertmanager:
     image: prom/alertmanager:v0.26.0
     <<: *logging
     user: root
@@ -145,17 +148,16 @@ alertmanager:
       - '--storage.path=/etc/alertmanager/data'
     volumes:
       - type: bind
-        source: ../monitoring/alertmanager/alertmanager-config.yml
+        source: ../configs/monitoring/alertmanager/alertmanager-config.yml
         target: /etc/alertmanager/config.yml
         read_only: true
     networks:
-      - poga-network
+      - poga
 
 volumes:
-  grafana-data:  ## WARNING! No NFS, node-specific volume
   prometheus-data:  ## WARNING! No NFS, node-specific volume
   alertmanager-bot-data:  ## WARNING! No NFS, node-specific volume
 
 networks:
-  poga-network:
+  poga:
     external: true

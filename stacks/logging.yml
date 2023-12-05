@@ -1,0 +1,34 @@
+version: '3.8'
+
+x-deploy: &deploy_cons
+  placement:
+    constraints:
+      - node.role == manager
+  replicas: 1
+  restart_policy:
+        condition: on-failure
+
+services:
+  loki:
+    image: grafana/loki:2.9.1
+    user: root
+    deploy: *deploy_cons
+    ports:
+      - target: 3100
+        published: 3100
+        protocol: tcp
+        mode: ingress
+    volumes:
+      - type: bind
+        source: ../configs/logging/loki/loki-config.yml
+        target: /etc/loki/local-config.yaml
+    command: >-
+      -c
+      "/usr/bin/loki -config.file=/etc/loki/local-config.yaml -config.expand-env=true 2>&1 | tee /var/log/loki.log"
+    entrypoint: /bin/sh
+    networks:
+      - poga
+
+networks:
+  poga:
+    external: true
