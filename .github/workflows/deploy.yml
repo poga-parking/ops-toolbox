@@ -13,10 +13,11 @@ jobs:
         ARGS: "-rlgoDzvc -i"
         REMOTE_HOST: ${{ secrets.DEPLOY_REMOTE_HOST }}
         REMOTE_USER: ${{ secrets.DEPLOY_REMOTE_USER }}
-        SCRIPT_BEFORE: |
-          whoami
-          ls -al
-        SCRIPT_AFTER: |
-          whoami
-          ls -al
-          echo $RSYNC_STDOUT
+        SOURCE: .
+        # TARGET: poga-deploy
+        # SCRIPT_BEFORE: |
+        #   mkdir -p poga-deploy && echo -e ${{ vars.SETTINGS }} > ./poga-deploy/stacks/.env
+        # SCRIPT_AFTER: |
+        #   whoami
+        #   ls -al
+        #   echo $RSYNC_STDOUT
