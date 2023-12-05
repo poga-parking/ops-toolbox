@@ -21,6 +21,9 @@ jobs:
     - name: Export token 
       uses: appleboy/ssh-action@master
       with:
+        host: ${{ secrets.DEPLOY_REMOTE_HOST }}
+        username: ${{ secrets.DEPLOY_REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
             export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
             cd configs\monitoring
