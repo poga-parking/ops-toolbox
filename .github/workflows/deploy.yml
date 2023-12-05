@@ -2,7 +2,7 @@ name: Deploy Repository
 
 on: [push] # Или другое событие по вашему выбору
 
-vars:
+env:
   SOURCE_CODE_PATH: poga-deploy
 
 jobs:
