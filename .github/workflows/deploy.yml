@@ -1,23 +1,18 @@
-name: Deploy Stack
+name: Deploy Repository
 
-on: [push]
+on: [push] # Или другое событие по вашему выбору
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Deploy to Staging server
-      uses: easingthemes/ssh-deploy@main
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Copy Repository to Remote Server
+      uses: appleboy/scp-action@master
       with:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        ARGS: "-rlgoDzvc -i"
-        REMOTE_HOST: ${{ secrets.DEPLOY_REMOTE_HOST }}
-        REMOTE_USER: ${{ secrets.DEPLOY_REMOTE_USER }}
-        SOURCE: "./"
-        TARGET: poga-deploy
-        # SCRIPT_BEFORE: |
-        #   mkdir -p poga-deploy && echo -e ${{ vars.SETTINGS }} > ./poga-deploy/stacks/.env
-        # SCRIPT_AFTER: |
-        #   whoami
-        #   ls -al
-        #   echo $RSYNC_STDOUT
+        host: ${{ secrets.DEPLOY_REMOTE_HOST }}
+        username: ${{ secrets.DEPLOY_REMOTE_USER }}
+        source: "."
+        target: "poga/deploy"
