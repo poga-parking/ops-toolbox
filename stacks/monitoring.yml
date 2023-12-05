@@ -29,6 +29,9 @@ services:
         source: ../configs/monitoring/grafana/provisioning/dashboards/main.yml
         target: /etc/grafana/provisioning/dashboards/main.yaml
       - type: bind
+        source: ../configs/monitoring/grafana/provisioning/datasources/main.yml
+        target: /etc/grafana/provisioning/datasources/main.yaml
+      - type: bind
         source: ../configs/monitoring/grafana/dashboards
         target: /var/lib/grafana/dashboards
     environment:
@@ -156,7 +159,6 @@ services:
 
 volumes:
   prometheus-data:  ## WARNING! No NFS, node-specific volume
-  alertmanager-bot-data:  ## WARNING! No NFS, node-specific volume
 
 networks:
   poga:
