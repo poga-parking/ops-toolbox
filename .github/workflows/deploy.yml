@@ -19,7 +19,7 @@ jobs:
         username: ${{ secrets.DEPLOY_REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "."
-        target: "${{ env.SOURCE_CODE_PATH }}"
+        target: ${{ env.SOURCE_CODE_PATH }}
         
     - name: Export token 
       uses: appleboy/ssh-action@master
