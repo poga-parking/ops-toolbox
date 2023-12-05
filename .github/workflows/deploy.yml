@@ -18,6 +18,7 @@ jobs:
         host: ${{ secrets.DEPLOY_REMOTE_HOST }}
         username: ${{ secrets.DEPLOY_REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        rm: true
         source: "."
         target: ${{ env.SOURCE_CODE_PATH }}
         
@@ -31,6 +32,7 @@ jobs:
             export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
             cd ${{ env.SOURCE_CODE_PATH }}/configs/monitoring/alertmanager
             sed -i "s|bot_token: ''|bot_token: '${TELEGRAM_BOT_TOKEN}'|g" alertmanager-config.yml
-            echo "${{ vars.SETTINGS }}" >> ~/${{ env.SOURCE_CODE_PATH }}/stacks/.env
+            echo "${{ vars.SETTINGS }}" > ~/${{ env.SOURCE_CODE_PATH }}/stacks/.env
+            export $(cat ~/${{ env.SOURCE_CODE_PATH }}/stacks/.env) > /dev/null 2>&1
     
 
