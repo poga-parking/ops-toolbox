@@ -17,9 +17,13 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "."
         target: "poga-deploy"
-        overwrite: true
+        
+    - name: Export token 
+      uses: appleboy/ssh-action@master
+      with:
         script: |
             export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
             cd configs\monitoring
             sed -i "s|bot_token: ''|bot_token: '${TELEGRAM_BOT_TOKEN}'|g" alertmanager/config.yml
+    
 
