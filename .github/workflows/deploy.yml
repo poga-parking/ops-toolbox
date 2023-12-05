@@ -16,5 +16,5 @@ jobs:
         username: ${{ secrets.DEPLOY_REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "."
-        target: "/poga-deploy"
+        target: "poga-deploy"
         overwrite: true
