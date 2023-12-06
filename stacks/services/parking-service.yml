@@ -1,0 +1,38 @@
+version: '3.8'
+
+x-logging: &logging
+  logging:
+    driver: loki
+    options:
+      loki-url: "${LOGGING_DSN}"
+
+services:
+  parking:
+    <<: *logging
+    image: ${PARKING_SERVICE_IMAGE}
+    environment:
+      - DB_URL=${RDBS_DSN}
+      - DB_USERNAME=${RDBS_USER}
+      - DB_PASSWORD=${RDBS_PASSWORD}
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 30s
+        max-attempts: 3
+      placement:
+        constraints:
+          - node.labels.apps == true
+    ports:
+      - target: 8080
+        published: ${PARKING_SERVICE_PORT}
+        protocol: tcp
+        mode: ingress
+    networks:
+      - poga
+
+networks:
+  poga:
+    external: true

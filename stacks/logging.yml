@@ -6,7 +6,7 @@ x-deploy: &deploy_cons
       - node.role == manager
   replicas: 1
   restart_policy:
-        condition: on-failure
+    condition: on-failure
 
 services:
   loki:
@@ -15,7 +15,7 @@ services:
     deploy: *deploy_cons
     ports:
       - target: 3100
-        published: 3100
+        published: ${LOKI_PORT}
         protocol: tcp
         mode: ingress
     volumes:

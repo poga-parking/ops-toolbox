@@ -1,0 +1,29 @@
+name: Deploy services on production server
+
+on:
+  workflow_run:
+    workflows: ["deploy infrastructure"]
+    types:
+      - completed
+
+env:
+  SOURCE_CODE_PATH: ~/poga-deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: services
+    steps:
+      - name: Run Service Stacks
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_REMOTE_HOST }}
+          username: ${{ secrets.DEPLOY_REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            export RDBS_DSN="${{ secrets.RDBS_DSN }}"
+            export RDBS_USER="${{ secrets.RDBS_USER }}"
+            export RDBS_PASSWORD="${{ secrets.RDBS_PASSWORD }}"
+            export PARKING_SERVICE_IMAGE="${{ vars.PARKING_SERVICE_IMAGE }}"
+            /bin/sh ${{ env.SOURCE_CODE_PATH }}/scripts/run-service-stacks.sh

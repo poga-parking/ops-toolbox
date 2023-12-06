@@ -1,4 +1,4 @@
-name: Deploy on production server
+name: deploy infrastructure
 
 on: [push] # Или другое событие по вашему выбору
 
@@ -33,6 +33,8 @@ jobs:
             cd ${{ env.SOURCE_CODE_PATH }}/configs/monitoring/alertmanager
             sed -i "s|bot_token: ''|bot_token: '${TELEGRAM_BOT_TOKEN}'|g" alertmanager-config.yml
             echo "${{ vars.SETTINGS }}" | tr -d '\r' > ${{ env.SOURCE_CODE_PATH }}/stacks/.env
+            echo "${{ secrets.GRAFANA_USER }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
+            echo "${{ secrets.GRAFANA_PASSWORD }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
   deploy:
     needs: delivery
     runs-on: ubuntu-latest
@@ -45,6 +47,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             export $(cat ${{ env.SOURCE_CODE_PATH }}/stacks/.env | xargs) > /dev/null 2>&1
-            chmod +x ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
-            /bin/sh ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
-
+            chmod +x ${{ env.SOURCE_CODE_PATH }}/scripts/run-env-stacks.sh
+            /bin/sh ${{ env.SOURCE_CODE_PATH }}/scripts/run-env-stacks.sh
