@@ -4,7 +4,7 @@ x-logging: &logging
   logging:
     driver: loki
     options:
-      loki-url: "" # put url
+      loki-url: "https://logs.pogaparking.ru/loki/api/v1/push"
 
 x-deploy: &deploy_cons
   placement:
