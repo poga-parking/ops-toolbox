@@ -40,8 +40,8 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           echo "${{ vars.SETTINGS }}" | tr -d '\r' > ${{ env.SOURCE_CODE_PATH }}/stacks/.env
-          echo "${{ secrets.GRAFANA_USER }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
-          echo "${{ secrets.GRAFANA_PASSWORD }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
+          echo "GRAFANA_USER=${{ secrets.GRAFANA_USER }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
+          echo "GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
   deploy:
     needs: delivery
     runs-on: ubuntu-latest
