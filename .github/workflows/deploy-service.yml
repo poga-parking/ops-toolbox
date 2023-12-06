@@ -2,7 +2,7 @@ name: Deploy Services
 
 on:
   workflow_run:
-    workflows: ["Deploy Infrastructure"]
+    workflows: ["Deploy Environment"]
     types:
       - completed
 

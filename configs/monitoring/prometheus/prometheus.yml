@@ -33,7 +33,7 @@ scrape_configs:
         type: 'A'
         port: 9100
 
-  - job_name: 'parking-service'
+  - job_name: 'parking'
     scrape_interval: 5s
     static_configs:
-      - targets: ['parking-service:8080']
+      - targets: ['parking:8090']
