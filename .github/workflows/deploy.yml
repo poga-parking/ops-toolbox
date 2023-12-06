@@ -40,14 +40,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Docker Stacks
-        run: |
-          which ssh-agent || ( apt-get install -qq openssh-client )
-          eval $(ssh-agent -s)
-          ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}")
-          mkdir -p ~/.ssh
-          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-          cat ~/.ssh/config
-          ssh ${{ secrets.DEPLOY_REMOTE_HOST }} "
-          chmod +x ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
-          && ./${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_REMOTE_HOST }}
+          username: ${{ secrets.DEPLOY_REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            chmod +x ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
+            ./${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
 
