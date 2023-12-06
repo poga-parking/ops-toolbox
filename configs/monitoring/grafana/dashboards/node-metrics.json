@@ -20,7 +20,7 @@
     "fiscalYearStartMonth": 0,
     "gnetId": 13978,
     "graphTooltip": 0,
-    "id": 4,
+    "id": 2,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -116,7 +116,7 @@
             "expr": "(\n  (1 - rate(node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"}[$__interval]))\n/ ignoring(cpu) group_left\n  count without (cpu)(node_cpu_seconds_total{job=\"node-exporter\", mode=\"idle\", instance=\"$instance\"})\n)\n",
             "format": "time_series",
             "interval": "1m",
-            "intervalFactor": 5,
+            "intervalFactor": 1,
             "legendFormat": "{{cpu}}",
             "range": true,
             "refId": "A"
@@ -980,8 +980,8 @@
         {
           "current": {
             "selected": false,
-            "text": "10.0.1.92:9100",
-            "value": "10.0.1.92:9100"
+            "text": "10.0.1.101:9100",
+            "value": "10.0.1.101:9100"
           },
           "datasource": {
             "type": "prometheus",
@@ -1041,6 +1041,6 @@
     "timezone": "browser",
     "title": "Node Metrics",
     "uid": "54219944-b447-40f4-a6ae-2b4b633d78b9",
-    "version": 5,
+    "version": 1,
     "weekStart": ""
   }
