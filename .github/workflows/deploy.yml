@@ -47,5 +47,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             chmod +x ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
-            ./${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
+            /bin/sh ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
 
