@@ -36,4 +36,4 @@ scrape_configs:
   - job_name: 'parking'
     scrape_interval: 5s
     static_configs:
-      - targets: ['parking:8090']
+      - targets: ['parking:8080']
