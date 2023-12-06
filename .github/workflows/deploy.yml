@@ -1,12 +1,12 @@
-name: Deploy Repository
+name: Deploy on production server
 
 on: [push] # Или другое событие по вашему выбору
 
 env:
-  SOURCE_CODE_PATH: poga-deploy
+  SOURCE_CODE_PATH: ~/poga-deploy
 
 jobs:
-  deploy:
+  delivery:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -19,10 +19,10 @@ jobs:
         username: ${{ secrets.DEPLOY_REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         rm: true
-        source: "."
+        source: "configs/*,stacks/*,scripts/*"
         target: ${{ env.SOURCE_CODE_PATH }}
         
-    - name: Export token 
+    - name: Export Telegram Bot Token 
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DEPLOY_REMOTE_HOST }}
@@ -32,7 +32,21 @@ jobs:
             export TELEGRAM_BOT_TOKEN="${{ secrets.TELEGRAM_BOT_TOKEN }}"
             cd ${{ env.SOURCE_CODE_PATH }}/configs/monitoring/alertmanager
             sed -i "s|bot_token: ''|bot_token: '${TELEGRAM_BOT_TOKEN}'|g" alertmanager-config.yml
-            echo "${{ vars.SETTINGS }}" > ~/${{ env.SOURCE_CODE_PATH }}/stacks/.env
-            export $(cat ~/${{ env.SOURCE_CODE_PATH }}/stacks/.env) > /dev/null 2>&1
-    
+            echo "${{ vars.SETTINGS }}" > ${{ env.SOURCE_CODE_PATH }}/stacks/.env
+            export $(cat ${{ env.SOURCE_CODE_PATH }}/stacks/.env) > /dev/null 2>&1
+  
+  deploy:
+    needs: delivery
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Docker Stacks
+        run: |
+          which ssh-agent || ( apt-get install -qq openssh-client )
+          eval $(ssh-agent -s)
+          ssh-add <(echo "${{ secrets.SSH_PRIVATE_KEY }}")
+          mkdir -p ~/.ssh
+          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+          cat ~/.ssh/config
+          chmod +x ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
+          ./${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
 
