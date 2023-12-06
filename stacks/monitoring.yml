@@ -25,9 +25,9 @@ services:
         protocol: tcp
         mode: ingress
     volumes:
-      - type: volume
-        source: grafana-data
-        target: /var/lib/grafana
+      # - type: volume
+      #   source: grafana-data
+      #   target: /var/lib/grafana
       - type: bind
         source: ../configs/monitoring/grafana/provisioning/dashboards/main.yml
         target: /etc/grafana/provisioning/dashboards/main.yaml
@@ -59,9 +59,9 @@ services:
       - '--storage.tsdb.retention.time=7d'
     deploy: *deploy_cons
     volumes:
-      - type: volume
-        source: prometheus-data
-        target: /prometheus
+      # - type: volume
+      #   source: prometheus-data
+        # target: /prometheus
       - type: bind
         source: ../configs/monitoring/prometheus/prometheus.yml
         target: /etc/prometheus/prometheus.yml
@@ -160,9 +160,9 @@ services:
     networks:
       - poga
 
-volumes:
-  grafana-data:  ## WARNING! No NFS, node-specific volume
-  prometheus-data:  ## WARNING! No NFS, node-specific volume
+# volumes:
+  # grafana-data:  ## WARNING! No NFS, node-specific volume
+  # prometheus-data:  ## WARNING! No NFS, node-specific volume
 
 networks:
   poga:
