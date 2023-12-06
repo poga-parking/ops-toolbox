@@ -16,6 +16,9 @@ common:
     kvstore:
       store: inmemory
 
+limits_config:
+  reject_old_samples: false
+
 query_range:
   results_cache:
     cache:
