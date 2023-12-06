@@ -27,4 +27,5 @@ jobs:
             export RDBS_PASSWORD="${{ secrets.RDBS_PASSWORD }}"
             export PARKING_SERVICE_IMAGE="${{ vars.PARKING_SERVICE_IMAGE }}"
             export PARKING_SERVICE_PORT="${{ vars.PARKING_SERVICE_PORT }}"
+            export LOGGING_DSN="${{ vars.LOGGING_DSN }}"
             /bin/sh ${{ env.SOURCE_CODE_PATH }}/scripts/run-service-stacks.sh

@@ -42,6 +42,7 @@ jobs:
           echo "${{ vars.SETTINGS }}" | tr -d '\r' > ${{ env.SOURCE_CODE_PATH }}/stacks/.env
           echo "GRAFANA_USER=${{ secrets.GRAFANA_USER }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
           echo "GRAFANA_PASSWORD=${{ secrets.GRAFANA_PASSWORD }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
+          echo "LOGGING_DSN=${{ vars.LOGGING_DSN }}" >> ${{ env.SOURCE_CODE_PATH }}/stacks/.env
   deploy:
     needs: delivery
     runs-on: ubuntu-latest
