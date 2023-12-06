@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v3
-
+      uses: actions/checkout@v4
+      with:
+        ref: 'master'
     - name: Copy Repository to Remote Server
       uses: appleboy/scp-action@master
       with:
@@ -21,7 +22,6 @@ jobs:
         rm: true
         source: "configs/*,stacks/*,scripts/*"
         target: ${{ env.SOURCE_CODE_PATH }}
-        
     - name: Export Telegram Bot Token 
       uses: appleboy/ssh-action@master
       with:
@@ -34,7 +34,6 @@ jobs:
             sed -i "s|bot_token: ''|bot_token: '${TELEGRAM_BOT_TOKEN}'|g" alertmanager-config.yml
             echo "${{ vars.SETTINGS }}" > ${{ env.SOURCE_CODE_PATH }}/stacks/.env
             export $(cat ${{ env.SOURCE_CODE_PATH }}/stacks/.env) > /dev/null 2>&1
-  
   deploy:
     needs: delivery
     runs-on: ubuntu-latest
