@@ -47,6 +47,7 @@ jobs:
           mkdir -p ~/.ssh
           echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
           cat ~/.ssh/config
+          ssh ${{ secrets.DEPLOY_REMOTE_HOST }} "
           chmod +x ${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
-          ./${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh
+          && ./${{ env.SOURCE_CODE_PATH }}/scripts/run-stacks.sh"
 
