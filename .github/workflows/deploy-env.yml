@@ -1,6 +1,6 @@
-name: deploy infrastructure
+name: Deploy Infrastructure
 
-on: [push] # Или другое событие по вашему выбору
+on: [push]
 
 env:
   SOURCE_CODE_PATH: ~/poga-deploy

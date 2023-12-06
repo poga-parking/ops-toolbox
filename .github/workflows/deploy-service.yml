@@ -1,8 +1,8 @@
-name: Deploy services on production server
+name: Deploy Services
 
 on:
   workflow_run:
-    workflows: ["deploy infrastructure"]
+    workflows: ["Deploy Infrastructure"]
     types:
       - completed
 
