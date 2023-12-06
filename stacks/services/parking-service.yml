@@ -27,10 +27,6 @@ services:
         published: ${PARKING_SERVICE_PORT}
         protocol: tcp
         mode: ingress
-    healthcheck:
-      test: ["curl", "--fail", "http://localhost:8080/health", "||", "exit", "1"]
-      interval: 15s
-      retries: 5
     networks:
       - poga
 
