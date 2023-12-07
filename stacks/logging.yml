@@ -14,10 +14,11 @@ services:
     user: root
     deploy: *deploy_cons
     ports:
-      - target: 3100
-        published: 127.0.0.1 #${LOKI_PORT}
-        protocol: tcp
-        mode: ingress
+      - "127.0.0.1:3100:3100"
+      # - target: 3100
+      #   published: ${LOKI_PORT}
+      #   protocol: tcp
+      #   mode: ingress
     volumes:
       - type: bind
         source: ../configs/logging/loki/loki-config.yml
