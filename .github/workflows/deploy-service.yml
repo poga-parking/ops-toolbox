@@ -5,7 +5,6 @@ on:
     workflows: ["Deploy Environment"]
     types:
       - completed
-  workflow_dispatch:
 
 env:
   SOURCE_CODE_PATH: ~/poga-deploy
