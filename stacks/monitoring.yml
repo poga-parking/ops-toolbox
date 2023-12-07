@@ -20,10 +20,10 @@ services:
     <<: *logging
     deploy: *deploy_cons
     ports:
-      - target: 80
+      - target: 3000
         published: ${GRAFANA_PORT}
         protocol: tcp
-        mode: host
+        mode: ingress
     volumes:
       # - type: volume
       #   source: grafana-data
@@ -50,7 +50,7 @@ services:
       - target: 9090
         published: ${PROMETHEUS_PORT}
         protocol: tcp
-        mode: host
+        mode: ingress
     image: prom/prometheus:v2.48.0
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -147,7 +147,7 @@ services:
       - target: 9093
         published: 9093
         protocol: tcp
-        mode: host
+        mode: ingress
     deploy: *deploy_cons
     command:
       - '--config.file=/etc/alertmanager/config.yml'
