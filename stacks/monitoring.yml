@@ -43,7 +43,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
       - GF_USERS_ALLOW_SIGN_UP=false
     networks:
-      - poga
+      - poga-net
 
   prometheus:
     <<: *logging
@@ -73,7 +73,7 @@ services:
         target: /etc/prometheus/alertmanager-rules.yml
         read_only: true
     networks:
-      - poga
+      - poga-net
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.0
@@ -108,7 +108,7 @@ services:
         target: /dev/disk
         read_only: true
     networks:
-      - poga
+      - poga-net
 
   node-exporter:
     image: prom/node-exporter:v1.5.0
@@ -139,7 +139,7 @@ services:
         target: /host/sys
         read_only: true
     networks:
-      - poga
+      - poga-net
 
   alertmanager:
     image: prom/alertmanager:v0.26.0
@@ -161,12 +161,12 @@ services:
         target: /etc/alertmanager/config.yml
         read_only: true
     networks:
-      - poga
+      - poga-net
 
 # volumes:
   # grafana-data:  ## WARNING! No NFS, node-specific volume
   # prometheus-data:  ## WARNING! No NFS, node-specific volume
 
 networks:
-  poga:
-    external: true
+  poga-net:
+    # external: true
