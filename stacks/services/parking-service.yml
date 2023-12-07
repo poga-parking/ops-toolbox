@@ -33,4 +33,4 @@ services:
 
 networks:
   poga:
-    external: true
+    # external: true
