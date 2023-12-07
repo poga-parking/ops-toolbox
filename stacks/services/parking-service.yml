@@ -24,7 +24,7 @@ services:
           - node.labels.apps == true
     ports:
       - target: 8080
-        published: ${PARKING_SERVICE_PORT}
+        published: 127.0.0.1 #${PARKING_SERVICE_PORT}
         protocol: tcp
         mode: ingress
     networks:
