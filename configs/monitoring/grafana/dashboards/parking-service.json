@@ -27,47 +27,10 @@
         "uid": "P8E80F9AEF21F6940"
       },
       "gridPos": {
-        "h": 8,
+        "h": 12,
         "w": 24,
         "x": 0,
         "y": 0
-      },
-      "id": 12,
-      "options": {
-        "dedupStrategy": "none",
-        "enableLogDetails": false,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": false,
-        "showTime": false,
-        "sortOrder": "Descending",
-        "wrapLogMessage": false
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
-          },
-          "editorMode": "code",
-          "expr": "{swarm_service=\"services_parking\"} |= `ERROR`",
-          "queryType": "range",
-          "refId": "A"
-        }
-      ],
-      "title": "ERROR logs",
-      "type": "logs"
-    },
-    {
-      "datasource": {
-        "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 8
       },
       "id": 11,
       "options": {
@@ -87,12 +50,12 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "{swarm_service=\"services_parking\"} |= \"INFO\"",
+          "expr": "{swarm_service=\"services_parking\"}",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "INFO logs",
+      "title": "Logs",
       "type": "logs"
     },
     {
@@ -101,7 +64,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 12
       },
       "id": 8,
       "panels": [],
@@ -189,7 +152,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 13
       },
       "id": 5,
       "options": {
@@ -215,7 +178,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum(increase(http_server_requests_seconds_max{method=\"GET\", uri=\"/statistics\"}[$__rate_interval]))",
+          "expr": "sum(increase(http_server_requests_seconds_max{method=\"GET\", uri=\"/user/statistics/{uid}\"}[$__rate_interval]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -243,7 +206,7 @@
           "useBackend": false
         }
       ],
-      "title": "StatisticsController GET /statistics",
+      "title": "StatisticsController GET /user/statistics/{uid}",
       "type": "timeseries"
     },
     {
@@ -327,7 +290,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 17
+        "y": 13
       },
       "id": 4,
       "options": {
@@ -465,7 +428,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 25
+        "y": 21
       },
       "id": 7,
       "options": {
@@ -491,7 +454,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum(increase(http_server_requests_seconds_max{method=\"POST\", uri=\"/place/unbook/{id}\"}[$__rate_interval]))",
+          "expr": "sum(increase(http_server_requests_seconds_max{uri=\"/place/unbook/{id}\", method=\"POST\"}[$__rate_interval]))",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -603,7 +566,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 21
       },
       "id": 6,
       "options": {
@@ -666,7 +629,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 33
+        "y": 29
       },
       "id": 9,
       "panels": [],
@@ -736,7 +699,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 34
+        "y": 30
       },
       "id": 10,
       "options": {
@@ -776,12 +739,13 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Parking Service Dashboard",
+  "uid": "fb92d033-d6e9-4c81-b17c-6abd61d65883",
   "version": 1,
   "weekStart": ""
 }
