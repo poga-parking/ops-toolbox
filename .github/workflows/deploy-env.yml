@@ -1,6 +1,6 @@
 name: Deploy Environment
 
-on: [push]
+on: [push, workflow_dispatch]
 
 env:
   SOURCE_CODE_PATH: ~/poga-deploy
